@@ -87,10 +87,14 @@ class TaskController extends AbstractController
     #[Route('/tasks/{id}/delete', name: 'task_delete')]
     public function deleteTaskAction(Task $task)
     {
-        $this->em->remove($task);
-        $this->em->flush();
+        if($this->getUser() == $task->getUser()) {
+            $this->em->remove($task);
+            $this->em->flush();
+            $this->addFlash('success', 'La tâche a bien été supprimée.');
 
-        $this->addFlash('success', 'La tâche a bien été supprimée.');
+            return $this->redirectToRoute('task_list');
+        }
+        $this->addFlash('error', 'Vous n\'avez pas les droits de suppression pour cette tâche.');
 
         return $this->redirectToRoute('task_list');
     }

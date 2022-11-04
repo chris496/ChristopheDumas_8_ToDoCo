@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class TaskController extends AbstractController
@@ -32,6 +33,8 @@ class TaskController extends AbstractController
     }
 
     #[Route('/tasks/create', name: 'task_create')]
+    #[IsGranted('ROLE_ADMIN', message: 'Vous n\'avez pas les droits suffisants')]
+    #[IsGranted('ROLE_USER', message: 'Vous n\'avez pas les droits suffisants')]
     public function createAction(Request $request)
     {
         $task = new Task();
@@ -53,6 +56,8 @@ class TaskController extends AbstractController
     }
 
     #[Route('/tasks/{id}/edit', name: 'task_edit')]
+    #[IsGranted('ROLE_ADMIN', message: 'Vous n\'avez pas les droits suffisants')]
+    #[IsGranted('ROLE_USER', message: 'Vous n\'avez pas les droits suffisants')]
     public function editAction(Task $task, Request $request)
     {
         $form = $this->createForm(TaskType::class, $task);
@@ -74,6 +79,8 @@ class TaskController extends AbstractController
     }
 
     #[Route('/tasks/{id}/toggle', name: 'task_toggle')]
+    #[IsGranted('ROLE_ADMIN', message: 'Vous n\'avez pas les droits suffisants')]
+    #[IsGranted('ROLE_USER', message: 'Vous n\'avez pas les droits suffisants')]
     public function toggleTaskAction(Task $task)
     {
         $task->toggle(!$task->isIsDone());
@@ -85,8 +92,17 @@ class TaskController extends AbstractController
     }
 
     #[Route('/tasks/{id}/delete', name: 'task_delete')]
+    //#[IsGranted('ROLE_ADMIN', message: 'Vous n\'avez pas les droits suffisants')]
+    #[IsGranted('ROLE_USER', message: 'Vous n\'avez pas les droits suffisants')]
     public function deleteTaskAction(Task $task)
-    {
+    {   
+        if($this->getUser()->getRoles()[0] == "ROLE_ADMIN" && $task->getUser()->getUsername() == "anonyme") {
+            $this->em->remove($task);
+            $this->em->flush();
+            $this->addFlash('success', 'La tâche a bien été supprimée.');
+
+            return $this->redirectToRoute('task_list');
+        }
         if($this->getUser() == $task->getUser()) {
             $this->em->remove($task);
             $this->em->flush();

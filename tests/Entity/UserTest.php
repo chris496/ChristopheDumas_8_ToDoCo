@@ -10,20 +10,22 @@ class UserTest extends TestCase
     private const EMAIL = 'email@mail.fr';
     private const PASSWORD = 'password';
     private const USERNAME = 'name';
+    private const ROLES = ['ROLE_USER'];
 
     public function testIfTrue(): void
     {
         $user = new User();
+        $user->setEmail(self::EMAIL);
+        $user->setEmail(self::EMAIL);
+        $user->setPassword(self::PASSWORD);
+        $user->setUsername(self::USERNAME);
+        $user->setRoles(self::ROLES);
 
         $this->assertSame(null, $user->getId());
-        
-        $user->setEmail(self::EMAIL);
         $this->assertSame(self::EMAIL, $user->getEmail());
-
-        $user->setPassword(self::PASSWORD);
+        $this->assertSame(self::EMAIL, $user->getUserIdentifier());
         $this->assertSame(self::PASSWORD, $user->getPassword());
-
-        $user->setUsername(self::USERNAME);
         $this->assertSame(self::USERNAME, $user->getUsername());
+        $this->assertSame(self::ROLES, $user->getRoles());
     }
 }

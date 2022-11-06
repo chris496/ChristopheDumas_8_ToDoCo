@@ -18,23 +18,17 @@ class TaskTest extends TestCase
         $user = new User();
         $task = new Task();
 
-        $this->assertSame(null, $task->getId());
-        
         $task->setCreatedAt($date);
-        $this->assertSame($date, $task->getCreatedAt());
-        
         $task->setTitle(self::TITLE);
-        $this->assertSame(self::TITLE, $task->getTitle());
-
         $task->setContent(self::CONTENT);
-        $this->assertSame(self::CONTENT, $task->getContent());
-        
         $task->setIsDone(true);
-        $this->assertNotFalse(true, $task->isIsDone());
-
         $task->setUser($user);
-        $this->assertSame($user, $task->getUser());
 
-        
+        $this->assertSame(null, $task->getId());
+        $this->assertSame($date, $task->getCreatedAt());
+        $this->assertSame(self::TITLE, $task->getTitle());
+        $this->assertSame(self::CONTENT, $task->getContent());
+        $this->assertNotFalse(true, $task->isIsDone());
+        $this->assertSame($user, $task->getUser());
     }
 }

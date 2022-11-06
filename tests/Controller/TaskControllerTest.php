@@ -11,31 +11,30 @@ class TaskControllerTest extends WebTestCase
 {
     private KernelBrowser|null $client = null;
 
-   public function setUp() : void
-
- {
-   $this->client = static::createClient();
- }
-    public function testSomething(): void
+    public function setUp(): void
     {
-        //$client = static::createClient();
-        $crawler = $this->client->request('GET', '/');
-        $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        $this->client = static::createClient();
     }
+     public function testSomething(): void
+     {
+         //$client = static::createClient();
+         $crawler = $this->client->request('GET', '/');
+         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+     }
 
-    public function testCreateActionRedirect()
-    {
-        $urlGenerator = $this->client->getContainer()->get('router.default');
-        //$client = static::createClient();
-        //$crawler = $client->request('GET', '/tasks/create');
-        $crawler = $this->client->request(Request::METHOD_GET, $urlGenerator->generate('task_create'));
-        dd($crawler);
-        $form = $crawler->selectButton('Ajouter')->form();
-        dd($form);
-        $form['task[title]'] = 'title';
-        $form['task[content]'] = 'content';
-        echo $this->client->getResponse()->getContent();
-    }
+     public function testCreateActionRedirect()
+     {
+         $urlGenerator = $this->client->getContainer()->get('router.default');
+         //$client = static::createClient();
+         //$crawler = $client->request('GET', '/tasks/create');
+         $crawler = $this->client->request(Request::METHOD_GET, $urlGenerator->generate('task_create'));
+         dd($crawler);
+         $form = $crawler->selectButton('Ajouter')->form();
+         dd($form);
+         $form['task[title]'] = 'title';
+         $form['task[content]'] = 'content';
+         echo $this->client->getResponse()->getContent();
+     }
 }
 
 /*
@@ -86,4 +85,3 @@ class TaskControllerTest extends TestCase
 
     }
 }*/
-

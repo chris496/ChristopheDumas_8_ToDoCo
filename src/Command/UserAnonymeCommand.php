@@ -46,10 +46,10 @@ class UserAnonymeCommand extends Command
         $user= $user[0];
         $test = $this->taskRepository->findAll();
         foreach ($test as $t) {
-            if($t->getUser() == null) {
+            if ($t->getUser() == null) {
                 $t->setUser($user);
                 $this->em->persist($t);
-                $this->em->flush();   
+                $this->em->flush();
             }
         }
         return Command::SUCCESS;

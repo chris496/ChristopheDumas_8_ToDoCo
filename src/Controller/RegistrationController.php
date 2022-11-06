@@ -24,7 +24,7 @@ class RegistrationController extends AbstractController
     {
         return $this->render('user/list.html.twig', ['users' => $userRepository->findAll()]);
     }
-    
+
     #[Route('/users/create', name: 'user_create')]
     #[IsGranted('ROLE_ADMIN', message: 'Vous n\'avez pas les droits suffisants')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, UserAuthenticator $authenticator, EntityManagerInterface $entityManager): Response

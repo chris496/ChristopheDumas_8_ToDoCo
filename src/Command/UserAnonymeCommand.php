@@ -21,6 +21,7 @@ class UserAnonymeCommand extends Command
 {
     private $taskRepository;
     private $userRepository;
+    private $em;
 
     public function __construct(TaskRepository $taskRepository, UserRepository $userRepository, EntityManagerInterface $em)
     {

@@ -14,6 +14,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class TaskController extends AbstractController
 {
+    private $em;
+    
     public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;

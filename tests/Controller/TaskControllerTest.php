@@ -11,10 +11,10 @@ class TaskControllerTest extends WebTestCase
 {
     private KernelBrowser|null $client = null;
 
-    public function setUp(): void
+    /*public function setUp(): void
     {
         $this->client = static::createClient();
-    }
+    }*/
      public function testSomething(): void
      {
          //$client = static::createClient();
@@ -24,18 +24,36 @@ class TaskControllerTest extends WebTestCase
 
      public function testCreateActionRedirect()
      {
-         $urlGenerator = $this->client->getContainer()->get('router.default');
-         //$client = static::createClient();
-         //$crawler = $client->request('GET', '/tasks/create');
-         $crawler = $this->client->request(Request::METHOD_GET, $urlGenerator->generate('task_create'));
+         //$urlGenerator = $this->client->getContainer()->get('router.default');
+         $client = static::createClient();
+         $crawler = $client->request('GET', '/tasks/create');
+        $this->assertResponseIsSuccessful();
+         /*$crawler = $this->client->request(Request::METHOD_GET, $urlGenerator->generate('task_create'));
          dd($crawler);
          $form = $crawler->selectButton('Ajouter')->form();
          dd($form);
          $form['task[title]'] = 'title';
          $form['task[content]'] = 'content';
-         echo $this->client->getResponse()->getContent();
+         echo $this->client->getResponse()->getContent();*/
      }
 }
+
+public function testVisitingWhileLoggedIn()
+    {
+        $client = static::createClient();
+        $userRepository = static::getContainer()->get(UserRepository::class);
+
+        // retrieve the test user
+        $testUser = $userRepository->findOneByEmail('john.doe@example.com');
+
+        // simulate $testUser being logged in
+        $client->loginUser($testUser);
+
+        // test e.g. the profile page
+        $client->request('GET', '/profile');
+        $this->assertResponseIsSuccessful();
+        $this->assertSelectorTextContains('h1', 'Hello John!');
+    }
 
 /*
 

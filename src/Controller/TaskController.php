@@ -1,21 +1,28 @@
 <?php
 
+/*
+ * This file is part of the Symfony package.
+ * (c) Fabien Potencier <fabien@symfony.com>
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace App\Controller;
 
 use App\Entity\Task;
 use App\Form\TaskType;
 use App\Repository\TaskRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class TaskController extends AbstractController
 {
-    private $em;
-    
+    private object $em;
+
     public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
@@ -94,18 +101,18 @@ class TaskController extends AbstractController
     }
 
     #[Route('/tasks/{id}/delete', name: 'task_delete')]
-    //#[IsGranted('ROLE_ADMIN', message: 'Vous n\'avez pas les droits suffisants')]
+    // #[IsGranted('ROLE_ADMIN', message: 'Vous n\'avez pas les droits suffisants')]
     #[IsGranted('ROLE_USER', message: 'Vous n\'avez pas les droits suffisants')]
     public function deleteTaskAction(Task $task)
     {
-        if ($this->getUser()->getRoles()[0] == "ROLE_ADMIN" && $task->getUser()->getUsername() == "anonyme") {
+        if ('ROLE_ADMIN' === $this->getUser()->getRoles()[0] && 'anonyme' === $task->getUser()->getUsername()) {
             $this->em->remove($task);
             $this->em->flush();
             $this->addFlash('success', 'La tâche a bien été supprimée.');
 
             return $this->redirectToRoute('task_list');
         }
-        if ($this->getUser() == $task->getUser()) {
+        if ($this->getUser() === $task->getUser()) {
             $this->em->remove($task);
             $this->em->flush();
             $this->addFlash('success', 'La tâche a bien été supprimée.');

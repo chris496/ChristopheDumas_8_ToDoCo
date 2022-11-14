@@ -1,13 +1,23 @@
 <?php
 
-namespace App\Tests\Controller;
+/*
+ * This file is part of the Symfony package.
+ * (c) Fabien Potencier <fabien@symfony.com>
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
-use PHPUnit\Framework\TestCase;
+namespace App\Tests;
 
-class DefaultControllerTest extends TestCase
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+
+class DefaultControllerTest extends WebTestCase
 {
-    public function testSomething(): void
+    public function testHomepage(): void
     {
-        $this->assertTrue(true);
+        $client = static::createClient();
+        $crawler = $client->request('GET', '/');
+
+        $this->assertResponseIsSuccessful();
     }
 }

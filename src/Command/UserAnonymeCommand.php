@@ -48,7 +48,7 @@ class UserAnonymeCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $io = new SymfonyStyle($input, $output);
+        //$io = new SymfonyStyle($input, $output);
 
         $user = $this->userRepository->findBy(['username' => 'anonyme']);
         $user = $user[0];

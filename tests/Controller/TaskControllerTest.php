@@ -1,105 +1,79 @@
 <?php
 
+/*
+ * This file is part of the Symfony package.
+ * (c) Fabien Potencier <fabien@symfony.com>
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace App\Tests\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Response;
 
 class TaskControllerTest extends WebTestCase
 {
     private KernelBrowser|null $client = null;
 
-    /*public function setUp(): void
-    {
-        $this->client = static::createClient();
-    }*/
-     public function testSomething(): void
-     {
-         //$client = static::createClient();
-         $crawler = $this->client->request('GET', '/');
-         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
-     }
-
-     public function testCreateActionRedirect()
-     {
-         //$urlGenerator = $this->client->getContainer()->get('router.default');
-         $client = static::createClient();
-         $crawler = $client->request('GET', '/tasks/create');
-        $this->assertResponseIsSuccessful();
-         /*$crawler = $this->client->request(Request::METHOD_GET, $urlGenerator->generate('task_create'));
-         dd($crawler);
-         $form = $crawler->selectButton('Ajouter')->form();
-         dd($form);
-         $form['task[title]'] = 'title';
-         $form['task[content]'] = 'content';
-         echo $this->client->getResponse()->getContent();*/
-     }
-}
-
-public function testVisitingWhileLoggedIn()
+    public function testListActionRedirect(): void
     {
         $client = static::createClient();
         $userRepository = static::getContainer()->get(UserRepository::class);
-
-        // retrieve the test user
-        $testUser = $userRepository->findOneByEmail('john.doe@example.com');
-
-        // simulate $testUser being logged in
+        $testUser = $userRepository->findOneByEmail('admin@todoco.com');
         $client->loginUser($testUser);
-
-        // test e.g. the profile page
-        $client->request('GET', '/profile');
+        $crawler = $client->request('GET', '/task');
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', 'Hello John!');
-    }
-
-/*
-
-namespace App\Tests\Controller;
-
-use PHPUnit\Framework\TestCase;
-
-class TaskControllerTest extends TestCase
-{
-    public function testListAction(): void
-    {
-        $this->assertTrue(true);
     }
 
     public function testCreateActionRedirect()
     {
-
-    }
-
-    public function testCreateActionRender()
-    {
-
+        $client = static::createClient();
+        $userRepository = static::getContainer()->get(UserRepository::class);
+        $testUser = $userRepository->findOneByEmail('admin@todoco.com');
+        $client->loginUser($testUser);
+        $crawler = $client->request('GET', '/tasks/create');
+        $form = $crawler->selectButton('Ajouter')->form();
+        $form['task[title]'] = 'title';
+        $form['task[content]'] = 'content';
+        $client->submit($form);
+        $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
     }
 
     public function testEditActionRedirect()
     {
-
+        $client = static::createClient();
+        $userRepository = static::getContainer()->get(UserRepository::class);
+        $testUser = $userRepository->findOneByEmail('admin@todoco.com');
+        $client->loginUser($testUser);
+        $crawler = $client->request('GET', '/tasks/1/edit');
+        $form = $crawler->selectButton('Modifier')->form();
+        $form['task[title]'] = 'title';
+        $form['task[content]'] = 'content';
+        $client->submit($form);
+        $client->submit($form);
+        $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
     }
 
-    public function testEditActionRender()
+    public function testToggleTaskActionRedirect()
     {
-
+        $client = static::createClient();
+        $userRepository = static::getContainer()->get(UserRepository::class);
+        $testUser = $userRepository->findOneByEmail('admin@todoco.com');
+        $client->loginUser($testUser);
+        $crawler = $client->request('GET', '/tasks/1/toggle');
+        $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
     }
 
-    public function testToggleTaskAction()
+    public function testDeleteActionRedirect()
     {
-
+        $client = static::createClient();
+        $userRepository = static::getContainer()->get(UserRepository::class);
+        $testUser = $userRepository->findOneByEmail('admin@todoco.com');
+        $client->loginUser($testUser);
+        $crawler = $client->request('GET', '/tasks/2/delete');
+        $this->assertResponseRedirects('/task', Response::HTTP_FOUND);
     }
-
-    public function testDeleteTaskActionRedirectOk()
-    {
-
-    }
-
-    public function testDeleteTaskActionRedirectNotOk()
-    {
-
-    }
-}*/
+}

@@ -17,14 +17,14 @@ class SecurityControllerTest extends WebTestCase
     public function testLoginUser(): void
     {
         $client = static::createClient();
-        $crawler = $client->request('GET', '/login');
+        $client->request('GET', '/login');
         $this->assertResponseIsSuccessful();
     }
 
     public function testLogoutUser(): void
     {
         $client = static::createClient();
-        $crawler = $client->request('GET', '/logout');
+        $client->request('GET', '/logout');
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
     }
 }

@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class TaskControllerTest extends WebTestCase
 {
-    private KernelBrowser|null $client = null;
+    //private KernelBrowser|null $client = null;
 
     public function testListActionRedirect(): void
     {
@@ -24,7 +24,7 @@ class TaskControllerTest extends WebTestCase
         $userRepository = static::getContainer()->get(UserRepository::class);
         $testUser = $userRepository->findOneByEmail('admin@todoco.com');
         $client->loginUser($testUser);
-        $crawler = $client->request('GET', '/task');
+        $client->request('GET', '/task');
         $this->assertResponseIsSuccessful();
     }
 
@@ -63,7 +63,7 @@ class TaskControllerTest extends WebTestCase
         $userRepository = static::getContainer()->get(UserRepository::class);
         $testUser = $userRepository->findOneByEmail('admin@todoco.com');
         $client->loginUser($testUser);
-        $crawler = $client->request('GET', '/tasks/1/toggle');
+        $client->request('GET', '/tasks/1/toggle');
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
     }
 
@@ -73,7 +73,7 @@ class TaskControllerTest extends WebTestCase
         $userRepository = static::getContainer()->get(UserRepository::class);
         $testUser = $userRepository->findOneByEmail('admin@todoco.com');
         $client->loginUser($testUser);
-        $crawler = $client->request('GET', '/tasks/2/delete');
+        $client->request('GET', '/tasks/2/delete');
         $this->assertResponseRedirects('/task', Response::HTTP_FOUND);
     }
 }

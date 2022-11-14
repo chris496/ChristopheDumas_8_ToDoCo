@@ -21,7 +21,7 @@ class RegistrationControllerTest extends WebTestCase
         $userRepository = static::getContainer()->get(UserRepository::class);
         $testUser = $userRepository->findOneByEmail('admin@todoco.com');
         $client->loginUser($testUser);
-        $crawler = $client->request('GET', '/users');
+        $client->request('GET', '/users');
         $this->assertResponseIsSuccessful();
         // $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
     }
@@ -32,7 +32,7 @@ class RegistrationControllerTest extends WebTestCase
         $userRepository = static::getContainer()->get(UserRepository::class);
         $testUser = $userRepository->findOneByEmail('admin@todoco.com');
         $client->loginUser($testUser);
-        $crawler = $client->request('GET', '/users/create');
+        $client->request('GET', '/users/create');
 
         $this->assertResponseIsSuccessful();
         // $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
@@ -44,7 +44,7 @@ class RegistrationControllerTest extends WebTestCase
         $userRepository = static::getContainer()->get(UserRepository::class);
         $testUser = $userRepository->findOneByEmail('admin@todoco.com');
         $client->loginUser($testUser);
-        $crawler = $client->request('GET', '/users/1/edit');
+        $client->request('GET', '/users/1/edit');
         $this->assertResponseIsSuccessful();
         // $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
     }

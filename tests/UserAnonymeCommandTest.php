@@ -17,10 +17,10 @@ class UserAnonymeCommandTest extends WebTestCase
 {
     public function testCommand(): void
     {
-        $client = static::createClient();
+        /*$client = static::createClient();
         $userRepository = static::getContainer()->get(UserRepository::class);
         $taskRepository = static::getContainer()->get(TaskRepository::class);
         $testUser = $userRepository->findOneByUsername('anonyme');
-        $testTask = $taskRepository->findAll();
+        $testTask = $taskRepository->findAll();*/
     }
 }

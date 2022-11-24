@@ -42,7 +42,7 @@ class TaskController extends AbstractController
     }
 
     #[Route('/tasks/create', name: 'task_create')]
-    #[IsGranted('ROLE_ADMIN', message: 'Vous n\'avez pas les droits suffisants')]
+    //#[IsGranted('ROLE_ADMIN', message: 'Vous n\'avez pas les droits suffisants')]
     #[IsGranted('ROLE_USER', message: 'Vous n\'avez pas les droits suffisants')]
     public function createAction(Request $request)
     {
@@ -88,7 +88,7 @@ class TaskController extends AbstractController
     }
 
     #[Route('/tasks/{id}/toggle', name: 'task_toggle')]
-    #[IsGranted('ROLE_ADMIN', message: 'Vous n\'avez pas les droits suffisants')]
+    //#[IsGranted('ROLE_ADMIN', message: 'Vous n\'avez pas les droits suffisants')]
     #[IsGranted('ROLE_USER', message: 'Vous n\'avez pas les droits suffisants')]
     public function toggleTaskAction(Task $task)
     {

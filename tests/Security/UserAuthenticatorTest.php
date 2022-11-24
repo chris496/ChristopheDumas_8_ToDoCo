@@ -1,20 +1,17 @@
 <?php
 
-/*
- * This file is part of the Symfony package.
- * (c) Fabien Potencier <fabien@symfony.com>
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace App\Tests\Security;
 
-use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class UserAuthenticatorTest extends TestCase
+class UserAuthenticatorTest extends WebTestCase
 {
-    public function testSomething(): void
+    public function testAuth(): void
     {
-        $this->assertTrue(true);
+        $urlGenerator = $this->client->getContainer()->get('router.default');
+
+        $this->client->request(Request::METHOD_GET, $urlGenerator->generate('homepage'));
+    
     }
 }
